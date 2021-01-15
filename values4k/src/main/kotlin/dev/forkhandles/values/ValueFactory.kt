@@ -19,10 +19,19 @@ abstract class ValueFactory<DOMAIN, PRIMITIVE>(
 }
 
 /**
- * Return a Object/null based on validation.
+ * Return an object/null based on validation.
  */
 fun <DOMAIN, PRIMITIVE> ValueFactory<DOMAIN, PRIMITIVE>.ofOrNull(value: PRIMITIVE): DOMAIN? = try {
     validate(value)
+} catch (e: Exception) {
+    null
+}
+
+/**
+ * Parse an object/null based on validation.
+ */
+fun <DOMAIN, PRIMITIVE> Parse<DOMAIN, PRIMITIVE>.parseOrNull(value: String): DOMAIN? = try {
+    parse(value)
 } catch (e: Exception) {
     null
 }
@@ -32,16 +41,6 @@ fun <DOMAIN, PRIMITIVE> ValueFactory<DOMAIN, PRIMITIVE>.ofOrNull(value: PRIMITIV
  */
 fun <DOMAIN, PRIMITIVE> ValueFactory<DOMAIN, PRIMITIVE>.ofResult4k(value: PRIMITIVE): Result<DOMAIN, Exception> =
     resultFrom { validate(value) }
-
-
-/**
- * Parse a Object/null based on validation.
- */
-fun <DOMAIN, PRIMITIVE> Parse<DOMAIN, PRIMITIVE>.parseOrNull(value: String): DOMAIN? = try {
-    parse(value)
-} catch (e: Exception) {
-    null
-}
 
 /**
  * Return a Result4k Success/Failure based on validation.
