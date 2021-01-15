@@ -7,15 +7,15 @@ import dev.forkhandles.result4k.resultFrom
  * Base value type for inline classes which enables type-safe primitives, along with Validation.
  */
 abstract class ValueFactory<DOMAIN, PRIMITIVE>(
-    internal val coerceFn: (PRIMITIVE) -> DOMAIN,
+    protected val coerceFn: (PRIMITIVE) -> DOMAIN,
     private val validation: Validation<PRIMITIVE>? = null
-) {
+) : Factory<DOMAIN, PRIMITIVE> {
     internal fun validate(value: PRIMITIVE): DOMAIN {
         validation?.check(value)
         return coerceFn(value)
     }
 
-    fun of(value: PRIMITIVE) = validate(value)
+    override fun of(value: PRIMITIVE) = validate(value)
 }
 
 /**
@@ -37,7 +37,7 @@ fun <DOMAIN, PRIMITIVE> ValueFactory<DOMAIN, PRIMITIVE>.ofResult4k(value: PRIMIT
 /**
  * Parse a Object/null based on validation.
  */
-fun <DOMAIN> Parse<DOMAIN>.parseOrNull(value: String): DOMAIN? = try {
+fun <DOMAIN, PRIMITIVE> Parse<DOMAIN, PRIMITIVE>.parseOrNull(value: String): DOMAIN? = try {
     parse(value)
 } catch (e: Exception) {
     null
@@ -46,5 +46,5 @@ fun <DOMAIN> Parse<DOMAIN>.parseOrNull(value: String): DOMAIN? = try {
 /**
  * Return a Result4k Success/Failure based on validation.
  */
-fun <DOMAIN> Parse<DOMAIN>.parseResult4k(value: String): Result<DOMAIN, Exception> =
+fun <DOMAIN, PRIMITIVE> Parse<DOMAIN, PRIMITIVE>.parseResult4k(value: String): Result<DOMAIN, Exception> =
     resultFrom { parse(value) }
