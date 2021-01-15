@@ -2,10 +2,10 @@
 
 import dev.forkhandles.result4k.recover
 import dev.forkhandles.result4k.resultFrom
-import dev.forkhandles.values.IntParse
+import dev.forkhandles.values.IntPrintParse
 import dev.forkhandles.values.IntValueFactory
 import dev.forkhandles.values.Maskers.hidden
-import dev.forkhandles.values.StringParse
+import dev.forkhandles.values.StringPrintParse
 import dev.forkhandles.values.StringValue
 import dev.forkhandles.values.StringValueFactory
 import dev.forkhandles.values.Value
@@ -15,15 +15,16 @@ import dev.forkhandles.values.parseResult4k
 import dev.forkhandles.values.regex
 
 inline class Money(val value: Int) {
-    companion object : IntValueFactory<Money>(::Money, 1.minValue), IntParse<Money>
+    companion object : IntValueFactory<Money>(::Money, 1.minValue), IntPrintParse<Money>
 }
 
 class SortCode private constructor(value: String) : StringValue(value) {
-    companion object : StringValueFactory<SortCode>(::SortCode, "\\d{6}".regex), StringParse<SortCode>
+    companion object : StringValueFactory<SortCode>(::SortCode, "\\d{6}".regex), StringPrintParse<SortCode>
 }
 
 class AccountNumber private constructor(value: String) : Value<String>(value, hidden()) {
-    companion object : StringValueFactory<AccountNumber>(::AccountNumber, "\\d{8}".regex), StringParse<AccountNumber>
+    companion object : StringValueFactory<AccountNumber>(::AccountNumber, "\\d{8}".regex),
+        StringPrintParse<AccountNumber>
 }
 
 fun main() {

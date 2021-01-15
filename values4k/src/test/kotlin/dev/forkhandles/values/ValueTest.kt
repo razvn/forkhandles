@@ -15,7 +15,7 @@ class MyValue private constructor(value: String) : Value<String>(value) {
 }
 
 class MyIntValue private constructor(value: Int) : Value<Int>(value) {
-    companion object : IntValueFactory<MyIntValue>(::MyIntValue, { it > 0 }), IntParse<MyIntValue>
+    companion object : IntValueFactory<MyIntValue>(::MyIntValue, { it > 0 }), IntPrintParse<MyIntValue>
 }
 
 class HiddenValue private constructor(value: String) : Value<String>(value, masking = hidden('t')) {

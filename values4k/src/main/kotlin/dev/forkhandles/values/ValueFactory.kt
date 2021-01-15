@@ -30,7 +30,7 @@ fun <DOMAIN, PRIMITIVE> ValueFactory<DOMAIN, PRIMITIVE>.ofOrNull(value: PRIMITIV
 /**
  * Parse an object/null based on validation.
  */
-fun <DOMAIN, PRIMITIVE> Parse<DOMAIN, PRIMITIVE>.parseOrNull(value: String): DOMAIN? = try {
+fun <DOMAIN, PRIMITIVE> PrintParse<DOMAIN, PRIMITIVE>.parseOrNull(value: String): DOMAIN? = try {
     parse(value)
 } catch (e: Exception) {
     null
@@ -45,5 +45,5 @@ fun <DOMAIN, PRIMITIVE> ValueFactory<DOMAIN, PRIMITIVE>.ofResult4k(value: PRIMIT
 /**
  * Return a Result4k Success/Failure based on validation.
  */
-fun <DOMAIN, PRIMITIVE> Parse<DOMAIN, PRIMITIVE>.parseResult4k(value: String): Result<DOMAIN, Exception> =
+fun <DOMAIN, PRIMITIVE> PrintParse<DOMAIN, PRIMITIVE>.parseResult4k(value: String): Result<DOMAIN, Exception> =
     resultFrom { parse(value) }
