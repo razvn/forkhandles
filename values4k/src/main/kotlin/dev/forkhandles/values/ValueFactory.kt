@@ -46,5 +46,5 @@ fun <DOMAIN> Parse<DOMAIN>.parseOrNull(value: String): DOMAIN? = try {
 /**
  * Return a Result4k Success/Failure based on validation.
  */
-fun <DOMAIN, PRIMITIVE> Parse<DOMAIN>.parseResult4k(value: String): Result<DOMAIN, Exception> =
+fun <DOMAIN> Parse<DOMAIN>.parseResult4k(value: String): Result<DOMAIN, Exception> =
     resultFrom { parse(value) }

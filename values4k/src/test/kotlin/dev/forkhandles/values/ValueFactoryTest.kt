@@ -34,15 +34,15 @@ class ValueFactoryTest {
         assertThat({ MyIntValue.parse("") }, throws<IllegalArgumentException>())
     }
 
-//    @Test
-//    fun `nullable parse`() {
-//        assertThat(MyIntValue.parseOrNull("123"), equalTo(MyIntValue.of(123)))
-//        assertThat(MyIntValue.parseOrNull(""), absent())
-//    }
-//
-//    @Test
-//    fun `result parse`() {
-//        assertThat(MyIntValue.parseResult4k("123"), equalTo(Success(MyIntValue.of(123))))
-//        assertThat(MyValue.ofResult4k("") is Failure<Exception>, equalTo(true))
-//    }
+    @Test
+    fun `nullable parse`() {
+        assertThat(MyIntValue.parseOrNull("123"), equalTo(MyIntValue.of(123)))
+        assertThat(MyIntValue.parseOrNull(""), absent())
+    }
+
+    @Test
+    fun `result parse`() {
+        assertThat(MyIntValue.parseResult4k("123"), equalTo(Success(MyIntValue.of(123))))
+        assertThat(MyValue.ofResult4k("") is Failure<Exception>, equalTo(true))
+    }
 }
