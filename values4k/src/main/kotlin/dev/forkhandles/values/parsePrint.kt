@@ -1,9 +1,5 @@
 package dev.forkhandles.values
 
-fun interface Parse<DOMAIN> {
-    fun parse(value: String): DOMAIN
-}
-
 interface Print<DOMAIN> {
     fun print(t: DOMAIN) = t.toString()
 }

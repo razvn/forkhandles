@@ -8,6 +8,8 @@ import dev.forkhandles.values.StringValue
 import dev.forkhandles.values.StringValueFactory
 import dev.forkhandles.values.Value
 import dev.forkhandles.values.minValue
+import dev.forkhandles.values.parseOrNull
+import dev.forkhandles.values.parseResult4k
 import dev.forkhandles.values.regex
 
 inline class Money(val value: Int) {
@@ -26,6 +28,8 @@ fun main() {
     printOrError { Money.of(1) } // ok
     printOrError { Money.of(0) } // will blow up
     printOrError { Money.parse("not money") } // will blow up
+    printOrError { Money.parseResult4k("not money") } // return failure
+    printOrError { Money.parseOrNull("not money") } // return null
 
     printOrError { SortCode.of("123qwe") } // will blow up
     printOrError { AccountNumber.of("12345678") } // ok
@@ -34,4 +38,4 @@ fun main() {
     printOrError { AccountNumber.parse("1234567") } // will blow up
 }
 
-private fun printOrError(fn: () -> Any) = println(resultFrom(fn).recover { it.message })
+private fun printOrError(fn: () -> Any?) = println(resultFrom(fn).recover { it.message })
