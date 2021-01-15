@@ -8,15 +8,12 @@ import dev.forkhandles.result4k.resultFrom
  */
 abstract class ValueFactory<DOMAIN, PRIMITIVE>(
     internal val coerceFn: (PRIMITIVE) -> DOMAIN,
-    private val validation: Validation<PRIMITIVE>? = null,
-    internal val parseFn: (String) -> PRIMITIVE
+    private val validation: Validation<PRIMITIVE>? = null
 ) {
     internal fun validate(value: PRIMITIVE): DOMAIN {
         validation?.check(value)
         return coerceFn(value)
     }
-
-    fun parse(value: String) = validate(parseFn(value))
 
     fun of(value: PRIMITIVE) = validate(value)
 }
@@ -31,10 +28,17 @@ fun <DOMAIN, PRIMITIVE> ValueFactory<DOMAIN, PRIMITIVE>.ofOrNull(value: PRIMITIV
 }
 
 /**
+ * Return a Result4k Success/Failure based on validation.
+ */
+fun <DOMAIN, PRIMITIVE> ValueFactory<DOMAIN, PRIMITIVE>.ofResult4k(value: PRIMITIVE): Result<DOMAIN, Exception> =
+    resultFrom { validate(value) }
+
+
+/**
  * Parse a Object/null based on validation.
  */
-fun <DOMAIN, PRIMITIVE> ValueFactory<DOMAIN, PRIMITIVE>.parseOrNull(value: String): DOMAIN? = try {
-    validate(parseFn(value))
+fun <DOMAIN> Parse<DOMAIN>.parseOrNull(value: String): DOMAIN? = try {
+    parse(value)
 } catch (e: Exception) {
     null
 }
@@ -42,9 +46,5 @@ fun <DOMAIN, PRIMITIVE> ValueFactory<DOMAIN, PRIMITIVE>.parseOrNull(value: Strin
 /**
  * Return a Result4k Success/Failure based on validation.
  */
-fun <DOMAIN, PRIMITIVE> ValueFactory<DOMAIN, PRIMITIVE>.ofResult4k(value: PRIMITIVE): Result<DOMAIN, Exception> = resultFrom { validate(value) }
-
-/**
- * Return a Result4k Success/Failure based on validation.
- */
-fun <DOMAIN, PRIMITIVE> ValueFactory<DOMAIN, PRIMITIVE>.parseResult4k(value: String): Result<DOMAIN, Exception> = resultFrom { validate(parseFn(value)) }
+fun <DOMAIN, PRIMITIVE> Parse<DOMAIN>.parseResult4k(value: String): Result<DOMAIN, Exception> =
+    resultFrom { parse(value) }
