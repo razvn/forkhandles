@@ -56,8 +56,7 @@ class AccountNumber private constructor(value: String) : StringValue(value) {
     companion object : StringValueFactory<AccountNumber>(::AccountNumber, "\\d{8}".regex)
 }
 
-// note that private constructors are not available on inline classes until Kotlin 1.4.30
-inline class SortCode /** private constructor **/(override val value: String) : Value<T> {
+inline class SortCode private constructor(override val value: String) : Value<T> {
     companion object : StringValueFactory<SortCode>(::SortCode, "\\d{6}".regex)
 }
 ```
@@ -90,17 +89,24 @@ class AccountNumber private constructor(value: String) : StringValue(value, hidd
 ```
 
 If we attempt to print our `AccountNumber` using toString() now will result in:
+
 ```kotlin
 ********
 ```
 
 Masking rules are modelled as a simple typealias and there are several useful ones bundled with values4k:
+
 ```kotlin
 typealias Masking<T> = T.() -> String
 ```
 
 ### Show
-For times where we want to display the underlying value as a String, we can use `show()`, which is the natural opposite to `parse()`. This is different (and safer than) using toString(), where we will have to deal with the Masking rules. In order to maintain symmetry (and to ensure that we can support inline classes), this method is present on the ValueFactory instance - this looks a little strange but it actually is consistent because the display and parse logic should NOT be part of the `Value` itself, but be separated logically.
+
+For times where we want to display the underlying value as a String, we can use `show()`, which is the natural opposite
+to `parse()`. This is different (and safer than) using toString(), where we will have to deal with the Masking rules. In
+order to maintain symmetry (and to ensure that we can support inline classes), this method is present on the
+ValueFactory instance - this looks a little strange but it actually is consistent because the display and parse logic
+should NOT be part of the `Value` itself, but be separated logically.
 
 ```kotlin
 Money.show(Money.of(123)) // returns "123"
